@@ -1,0 +1,174 @@
+		<?php
+$con = mysqli_connect("localhost","root","","datvet");
+if (!$con) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+?> 
+		<div class=footer1>
+		<table border=0><hr><tr>
+         <td>
+		<a href="dept.php">&nbsp;&nbsp;&nbsp;<font size=+0.5><u><b>Faculties </b></u></a></font>
+		 <ol>
+		<li><a href="" width=100px>&nbsp;Engineering & Technology</a>
+		 <ul style="margin-left:10px;margin-top:0px;">
+		   <li><a href="dept.php">&nbsp;&nbsp;&nbsp;Civil Engineeringring</a></li>
+		   		    <li><a href="dept.php">&nbsp;&nbsp;&nbsp;Computer Science</a></li>
+				   <li><a href="dept.php">&nbsp;&nbsp;&nbsp;Software Engineering</a></li>
+			   		  </ul>
+		  </li>
+		
+		 <li><a href="" width=100px>&nbsp;Computational science</a>
+		 <ul style="margin-left:10px;margin-top:0px;">
+			    <li><a href="dept.php">&nbsp;&nbsp;&nbsp;Mathematics</a></li>
+				 <li><a href="dept.php">&nbsp;&nbsp;&nbsp;Physics</a></li>
+			  <li><a href="dept.php">&nbsp;&nbsp;&nbsp;Chemistry</a></li>
+		  </ul>
+		  </li>
+
+		   <li><a href="">&nbsp;&nbsp;&nbsp;Social science</a>
+		 <ul style="margin-left:10px;margin-top:0px;">
+		   <li><a href="dept.php">&nbsp;&nbsp;&nbsp;Geography</a></li>
+		    <li><a href="dept.php">&nbsp;&nbsp;&nbsp;Civics</a></li>
+		    <li><a href="dept.php">&nbsp;&nbsp;&nbsp;History</a></li>
+		  </ul>
+		  </li>
+		  
+		<li><a href="">&nbsp;&nbsp;&nbsp;Business & Economics </a>
+		 <ul style="margin-left:10px;margin-top:0px;">
+		   <li><a href="dept.php">&nbsp;&nbsp;&nbsp;Economics</a></li>
+		   <li><a href="dept.php">&nbsp;&nbsp;&nbsp;Business and management</a></li>
+		  </ul>
+		  </li>
+		    <br>
+		  	<li><a href="">&nbsp;&nbsp;&nbsp;Dry land & Agriculture</a>
+		 <ul style="margin-left:10px;margin-top:0px;">
+		   <li><a href="animalSc.php">&nbsp;&nbsp;&nbsp;Animal Science</a></li>
+		    <li><a href="plantSc.php">&nbsp;&nbsp;&nbsp;Plant Science</a></li>
+		    <li><a href="NaturalSc.php">&nbsp;&nbsp;&nbsp;Natural Science</a></li>
+		  </ul>
+		  </li>
+		</ol>
+		</td>	
+		<td></td>
+		<td></td>
+
+		<td>
+	&nbsp;&nbsp;&nbsp;<font size=+0.2><u><b>Special Features of the site</b></u></font>
+		<ol><li>&nbsp;Online Student Pre application </a></li>
+		<li>&nbsp;Show Online Grading System</li>
+		<li>&nbsp;Online Dormitory System</li>
+		<li>&nbsp;Yesmail E-mailing system</li>
+		<li>&nbsp;Provide dyinamical News and Announcement</li>
+		<li>&nbsp;Uploading and Downloding important Documents</li>
+		<li>&nbsp;Recived users' feedback</li>
+			<br><br><br><br><br><br><br><br><br>
+					</ol>
+			</td> 	
+	<td>&nbsp;&nbsp;&nbsp;<font size=+0.2><u><b>Number of Users</b></u></font>
+			<ul>
+<li>&nbsp;Guest Users:-</li>
+<li>&nbsp;Members:-</li></ul>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+			</td>
+			<td> </td>	<td> </td>	<td> </td>	<td> </td>	<td> </td>	<td> </td>
+		<td>
+			<a href="old_news1.php">&nbsp;&nbsp;&nbsp;<font size=+0.5><u><b>Recent News</b></u></a></font>
+			<?php
+$count=0;
+$rk=0;
+/*$conn = mysqli_connect("localhost","root","");
+if (!$conn)
+  {
+  die('Could not connect: ' . mysql_error());
+  }
+mysqli_select_db("datvet", $conn);*/
+$sql="SELECT  * FROM news";
+$result = mysqli_query($con,$sql);
+ while($row=mysqli_fetch_array($result))
+{
+if(date('m')>=$row['month'])
+{
+if(date('d')>=$row['date'])
+$rk=date('d')-$row['date'];
+else
+$rk=$row['date']-date('d');
+}
+if($rk<0)
+$rk= -1*$rk;
+if($rk>=$row['duration'])
+{
+$count++;
+$D=date('d');
+$M=date('m');
+$Y=date('20y');
+mysql_query("INSERT INTO expired_news_repostory(date,month,year,first_content,content,title,count,duration,picture) VALUES('$D','$M','$Y','$row[first_content]','$row[content]','$row[title]','$count','$row[duration]','$row[picture]')");
+mysql_query("DELETE FROM  news where  duration ='$row[duration]'");
+}
+}
+$x=0;
+ $h=0;
+$con = mysqli_connect("localhost","root","");
+if (!$con)
+  {
+  die('Could not connect: ' . mysql_error());
+  }
+mysqli_select_db($con,"datvet");
+ $sql="SELECT  * FROM announcements";
+$rel = mysqli_query($con,$sql);
+while($row=mysqli_fetch_array($rel))
+{
+if(date('m')>=$row['month'])
+{
+if(date('d')>=$row['day'])
+$r=date('d')-$row['day'];
+else
+$r=$row['day']-date('d');
+}
+if($r<0)
+$r= -1*$r;
+if($r>=$row['duration'])
+{
+mysqli_query("DELETE FROM  announcements where duration='$row[duration]'");
+}
+}
+mysqli_close($con);
+$con = mysqli_connect("localhost","root","");
+
+if (!$con)
+  {
+  die('Could not connect: ' . mysqli_error());
+  }
+  $j=0;
+mysqli_select_db($con,"datvet");
+$sql="SELECT  * FROM expired_news_repostory ORDER BY month DESC";
+$result = mysqli_query($con,$sql);
+echo"<ol class=dotted>";
+while($row=mysqli_fetch_array($result))
+{
+if($j<16)
+{
+if(strcmp($row['year'],date('20y'))==0)
+{
+echo"<li><a href=old_news1.php?id=".$row['id'].">".$row['title']."</a></li>";
+$j=$j+1;
+}
+}
+}
+echo"</ol>";
+   ?>
+</td>
+<td> </td>
+</tr>
+		
+		<tr><td><a href="index1.php">&nbsp;&nbsp;&nbsp;<font size=+0.2><u><b>Login Account</b></u></a></font></td>
+	<td> </td>	<td> </td><td> </td><td><u><a href="#" Style="border:2px 2px;"><img src=images/footer_images/arrow_up_wb1.jpg width=20 height=20>Back to top</a></u></td>
+		<td> </td>	<td> </td>	<td> </td>	<td> </td>	<td> </td>	<td> </td>
+		<td> </td><td><u><img src=images/footer_images/phone.jpeg width=30 height=20 alt="0926580191"></u></td>
+	<td><u><a href="http://www.facebook.com/wachemouniversity Ethiopia" Style="border:2px 2px;"><img src=images/footer_images/share_facebook.gif width=20 height=20></a></u></td>
+	<td> </td><td><u><a href="http://www.twitter.com" Style="border:2px 2px;"><img src=images/footer_images/share_twitter.gif width=20 height=20></a></u></td>
+	<td><u><a href="http://www.yahoo.com" Style="border:2px 2px;"><img src=images/footer_images/q.jpg width=30 height=20></a></u></td>
+		<td><u><a href="http://www.youtube.com/v/MuUDwfwog8M" Style="border:2px 2px;"><img src=images/footer_images/youtube.png width=30 height=20></a></u></td>
+		</tr>
+		</table>
+<div style=background-color:#022221;width:100%;text-align:center;margin-bottom:-5%;><font size=3.8+ ><hr><hr><i>Copyright © <?php echo date('20y');?> Wachemo University!!! All Rights Reserved. Designed by Yeshiwas Yalew <hr> </i></font></div>
+</div>

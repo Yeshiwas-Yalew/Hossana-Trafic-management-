@@ -1,0 +1,9 @@
+		<?php
+$con = mysqli_connect("localhost","root","","datvet");
+if (!$con) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+?> 
+		
+<div style=background-color:#022221;width:100%;text-align:center;margin-bottom:-5%;><font size=3.8+ ><hr><hr><i>Copyright © <?php echo date('20y');?> Wachemo University!!! All Rights Reserved. Designed by Yeshiwas Yalew <hr> </i></font></div>
+</div>
